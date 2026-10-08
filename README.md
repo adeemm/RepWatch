@@ -11,7 +11,7 @@ re-uploaded whenever it needs to be refreshed.
 It is deliberately focused on **what happened** (the votes and the records),
 rather than "party-line" scores. You look at the votes and decide for yourself.
 
----
+The site is currently deployed via GitHub Pages at: http://adeem.co/RepWatch/
 
 ## Usage
 
