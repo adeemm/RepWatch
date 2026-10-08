@@ -1,0 +1,512 @@
+{
+ "meta": {
+  "congress": 119,
+  "generated": "2026-07-09",
+  "sample": true,
+  "counts": {
+   "members": 9,
+   "votes": 12,
+   "bills": 10
+  },
+  "sources": [
+   "sample data - not real people or votes"
+  ]
+ },
+ "members": [
+  {
+   "id": "A009001",
+   "name": "Sam Carter",
+   "chamber": "house",
+   "state": "TX",
+   "district": 14,
+   "party": "Republican",
+   "serving": true
+  },
+  {
+   "id": "B009002",
+   "name": "Dana Whitfield",
+   "chamber": "house",
+   "state": "TX",
+   "district": 35,
+   "party": "Democrat",
+   "serving": true
+  },
+  {
+   "id": "C009003",
+   "name": "Mia Torres",
+   "chamber": "house",
+   "state": "WA",
+   "district": 7,
+   "party": "Democrat",
+   "serving": true
+  },
+  {
+   "id": "D009004",
+   "name": "Ben Kowalski",
+   "chamber": "house",
+   "state": "WA",
+   "district": 11,
+   "party": "Republican",
+   "serving": true
+  },
+  {
+   "id": "S009005",
+   "name": "Grace Lin",
+   "chamber": "senate",
+   "state": "TX",
+   "class": 2,
+   "party": "Republican",
+   "serving": true
+  },
+  {
+   "id": "S009006",
+   "name": "Omar Haddad",
+   "chamber": "senate",
+   "state": "TX",
+   "class": 3,
+   "party": "Democrat",
+   "serving": true
+  },
+  {
+   "id": "S009007",
+   "name": "Pat Sullivan",
+   "chamber": "senate",
+   "state": "WA",
+   "class": 1,
+   "party": "Democrat",
+   "serving": true
+  },
+  {
+   "id": "S009008",
+   "name": "Ruth Okafor",
+   "chamber": "senate",
+   "state": "CA",
+   "class": 2,
+   "party": "Republican",
+   "serving": true
+  },
+  {
+   "id": "E009009",
+   "name": "Hank Delgado",
+   "chamber": "house",
+   "state": "CA",
+   "district": 30,
+   "party": "Republican",
+   "serving": false,
+   "left": "June 2025"
+  }
+ ],
+ "votes": [
+  {
+   "id": "2025-03-04-h12",
+   "chamber": "house",
+   "number": 12,
+   "date": "2025-03-04",
+   "question": "On Passage: H.R. 1234",
+   "kind": "passage",
+   "result": "Passed",
+   "requires": "1/2",
+   "bill": {
+    "type": "hr",
+    "number": 1234
+   },
+   "amendment": null,
+   "yea": [
+    "B009002",
+    "C009003",
+    "E009009"
+   ],
+   "nay": [
+    "A009001",
+    "D009004"
+   ]
+  },
+  {
+   "id": "2025-05-15-h150",
+   "chamber": "house",
+   "number": 150,
+   "date": "2025-05-15",
+   "question": "On Agreeing to the Amendment: H.R. 2483",
+   "kind": "amendment",
+   "result": "Failed",
+   "requires": "1/2",
+   "bill": {
+    "type": "hr",
+    "number": 2483
+   },
+   "amendment": {
+    "number": 3,
+    "author": "Sample Amendment No. 3"
+   },
+   "yea": [
+    "C009003"
+   ],
+   "nay": [
+    "A009001",
+    "B009002",
+    "D009004"
+   ]
+  },
+  {
+   "id": "2025-06-20-h187",
+   "chamber": "house",
+   "number": 187,
+   "date": "2025-06-20",
+   "question": "On Passage: H.R. 3010",
+   "kind": "passage",
+   "result": "Failed",
+   "requires": "2/3",
+   "bill": {
+    "type": "hr",
+    "number": 3010
+   },
+   "amendment": null,
+   "yea": [
+    "B009002",
+    "C009003"
+   ],
+   "nay": [
+    "A009001",
+    "D009004",
+    "E009009"
+   ]
+  },
+  {
+   "id": "2025-08-12-h231",
+   "chamber": "house",
+   "number": 231,
+   "date": "2025-08-12",
+   "question": "On Passage: H.R. 4102",
+   "kind": "passage",
+   "result": "Failed",
+   "requires": "1/2",
+   "bill": {
+    "type": "hr",
+    "number": 4102
+   },
+   "amendment": null,
+   "yea": [
+    "B009002",
+    "C009003"
+   ],
+   "nay": [
+    "A009001",
+    "D009004"
+   ]
+  },
+  {
+   "id": "2025-09-02-h255",
+   "chamber": "house",
+   "number": 255,
+   "date": "2025-09-02",
+   "question": "On Agreeing to the Resolution: H.Res. 45",
+   "kind": "passage",
+   "result": "Passed",
+   "requires": "1/2",
+   "bill": {
+    "type": "hres",
+    "number": 45
+   },
+   "amendment": null,
+   "yea": [
+    "A009001",
+    "B009002",
+    "C009003",
+    "D009004",
+    "E009009"
+   ],
+   "nay": []
+  },
+  {
+   "id": "2025-09-03-h256",
+   "chamber": "house",
+   "number": 256,
+   "date": "2025-09-03",
+   "question": "Call of the House",
+   "kind": "quorum",
+   "result": "Passed",
+   "requires": "QUORUM",
+   "bill": null,
+   "amendment": null,
+   "yea": [
+    "A009001",
+    "B009002",
+    "C009003",
+    "D009004"
+   ],
+   "nay": []
+  },
+  {
+   "id": "2025-10-08-h302",
+   "chamber": "house",
+   "number": 302,
+   "date": "2025-10-08",
+   "question": "On Passage: H.R. 5210",
+   "kind": "passage",
+   "result": "Passed",
+   "requires": "1/2",
+   "bill": {
+    "type": "hr",
+    "number": 5210
+   },
+   "amendment": null,
+   "yea": [
+    "A009001",
+    "B009002",
+    "C009003",
+    "D009004"
+   ],
+   "nay": []
+  },
+  {
+   "id": "2025-02-10-s55",
+   "chamber": "senate",
+   "number": 55,
+   "date": "2025-02-10",
+   "question": "On Passage: S. 890",
+   "kind": "passage",
+   "result": "Passed",
+   "requires": "1/2",
+   "bill": {
+    "type": "s",
+    "number": 890
+   },
+   "amendment": null,
+   "yea": [
+    "S009006",
+    "S009007"
+   ],
+   "nay": [
+    "S009005",
+    "S009008"
+   ]
+  },
+  {
+   "id": "2025-04-22-s120",
+   "chamber": "senate",
+   "number": 120,
+   "date": "2025-04-22",
+   "question": "On Agreeing to the Amendment: S. 1582",
+   "kind": "amendment",
+   "result": "Passed",
+   "requires": "1/2",
+   "bill": {
+    "type": "s",
+    "number": 1582
+   },
+   "amendment": {
+    "number": 21,
+    "author": "Sample Amendment No. 21"
+   },
+   "yea": [
+    "S009006",
+    "S009007",
+    "S009008"
+   ],
+   "nay": [
+    "S009005"
+   ]
+  },
+  {
+   "id": "2025-06-05-s171",
+   "chamber": "senate",
+   "number": 171,
+   "date": "2025-06-05",
+   "question": "On Passage: S. 1901",
+   "kind": "passage",
+   "result": "Passed",
+   "requires": "1/2",
+   "bill": {
+    "type": "s",
+    "number": 1901
+   },
+   "amendment": null,
+   "yea": [
+    "S009005",
+    "S009008"
+   ],
+   "nay": [
+    "S009006",
+    "S009007"
+   ]
+  },
+  {
+   "id": "2025-07-15-s233",
+   "chamber": "senate",
+   "number": 233,
+   "date": "2025-07-15",
+   "question": "On the Cloture Motion: PN 373 (judicial nomination)",
+   "kind": "cloture",
+   "result": "Agreed to",
+   "requires": "3/5",
+   "bill": null,
+   "amendment": null,
+   "yea": [
+    "S009005",
+    "S009006",
+    "S009007",
+    "S009008"
+   ],
+   "nay": []
+  },
+  {
+   "id": "2025-10-20-s280",
+   "chamber": "senate",
+   "number": 280,
+   "date": "2025-10-20",
+   "question": "On Agreeing to the Resolution: S.Res. 300",
+   "kind": "passage",
+   "result": "Passed",
+   "requires": "1/2",
+   "bill": {
+    "type": "sres",
+    "number": 300
+   },
+   "amendment": null,
+   "yea": [
+    "S009005",
+    "S009006",
+    "S009007",
+    "S009008"
+   ],
+   "nay": []
+  }
+ ],
+ "bills": {
+  "hr1234": {
+   "title": "Protecting Rural Hospitals Act",
+   "issue": "Health Care",
+   "summary": "This bill would give small hospitals in rural areas extra money to keep their emergency rooms open. It would also lower the cost of certain medical supplies and require the government to publish data on how much the federal government pays rural hospitals each year.",
+   "subjects": [
+    "Hospitals",
+    "Rural communities"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/1234"
+  },
+  "hr2483": {
+   "title": "Farm Workforce Improvement Act",
+   "issue": "Food & Farming",
+   "summary": "This bill would change the rules for hiring farm workers, including how visas are handled and what safety equipment must be provided. It would also create a new training program for farm equipment safety.",
+   "subjects": [
+    "Farm workers"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/2483"
+  },
+  "hr3010": {
+   "title": "Community Gun Safety Act",
+   "issue": "Guns & Firearms",
+   "summary": "This bill would require background checks for more gun sales, including private sales at gun shows. It would fund local programs for people who want to turn in a gun safely.",
+   "subjects": [
+    "Firearms",
+    "Background checks"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/3010"
+  },
+  "hr4102": {
+   "title": "Fair Pay for Overtime Work Act",
+   "issue": "Jobs & Labor",
+   "summary": "This bill would raise the income level at which office workers can claim overtime pay. It would also require larger employers to post their wage rates.",
+   "subjects": [
+    "Wages and hours"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/4102"
+  },
+  "hres45": {
+   "title": "A Resolution on Federal Ethics Standards",
+   "issue": "Government & Elections",
+   "summary": "This resolution would set new rules for how members of Congress must report gifts and business contacts. It would not create a law that applies to the public.",
+   "subjects": [
+    "Ethics"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/house-resolution/45"
+  },
+  "s890": {
+   "title": "Clean Rivers Restoration Act",
+   "issue": "Environment",
+   "summary": "This bill would give money to states to clean up polluted rivers and lakes. It would also pay to remove old factory waste near waterways, which can make drinking water unsafe.",
+   "subjects": [
+    "Water quality"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/senate-bill/890"
+  },
+  "s1582": {
+   "title": "Rural Broadband Access Act",
+   "issue": "Science & Technology",
+   "summary": "This bill would spend money to bring high-speed internet to rural towns and farmland. It would give extra grants to places that no phone company has served yet.",
+   "subjects": [
+    "Telecommunications",
+    "Broadband"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/senate-bill/1582"
+  },
+  "s1901": {
+   "title": "Small Employer Tax Relief Act",
+   "issue": "Taxes & Spending",
+   "summary": "This bill would let small businesses with under 50 workers keep a larger share of the health insurance premium tax credit. It would also simplify tax filing for very small businesses.",
+   "subjects": [
+    "Small business",
+    "Tax credits"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/senate-bill/1901"
+  },
+  "hr5210": {
+   "title": "Meth Prevention Funding Act",
+   "issue": "Health Care",
+   "summary": "This bill would provide grants to local health departments for programs that prevent methamphetamine use, including testing drinking water in affected counties.",
+   "subjects": [
+    "Drug abuse"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/house-bill/5210"
+  },
+  "sres300": {
+   "title": "A Resolution Updating Federal Ethics Standards",
+   "issue": "Government & Elections",
+   "summary": "This Senate resolution would update the standards of conduct for federal employees, including rules on gifts and after-career jobs. It would not create a law that applies to the public.",
+   "subjects": [
+    "Ethics"
+   ],
+   "url": "https://www.congress.gov/bill/119th-congress/senate-resolution/300"
+  }
+ },
+ "misconduct": [
+  {
+   "member_id": "A009001",
+   "allegation": "seeking reimbursements that exceeded reimbursable expenses",
+   "text": "The House Committee on Ethics is investigating whether this member requested housing reimbursements that were above the allowed amount. The investigation is ongoing, and no finding has been made.",
+   "first_date": "2025-11-02",
+   "last_date": "",
+   "tags": [
+    "ethics",
+    "unresolved"
+   ],
+   "consequences": [
+    "Ethics Committee investigation opened"
+   ]
+  },
+  {
+   "member_id": "D009004",
+   "allegation": "failure to disclose a campaign donation on time",
+   "text": "An election board reported that a campaign donation was disclosed two months late. The matter was reviewed and closed in 2025 with a warning. This entry is included as a sample of how resolved cases are shown.",
+   "first_date": "2025-01-20",
+   "last_date": "2025-05-14",
+   "tags": [
+    "elections",
+    "resolved"
+   ],
+   "consequences": [
+    "Warning issued",
+    "Case closed"
+   ]
+  }
+ ],
+ "issues": {
+  "Health Care": "Health Care",
+  "Food & Farming": "Food & Farming",
+  "Guns & Firearms": "Guns & Firearms",
+  "Jobs & Labor": "Jobs & Labor",
+  "Government & Elections": "Government & Elections",
+  "Environment": "Environment",
+  "Science & Technology": "Science & Technology",
+  "Taxes & Spending": "Taxes & Spending"
+ }
+}

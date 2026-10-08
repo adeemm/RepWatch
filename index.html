@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RepWatch - Representative Vote Tracker</title>
+  <meta name="description" content="See how your elected representatives have voted on the issues that matter to you, in plain language.">
+  <meta name="theme-color" content="#123a63">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="app-header">
+    <div class="brand" id="brand-home" role="button" tabindex="0" aria-label="RepWatch home">
+      <span class="brand-mark" aria-hidden="true">✓</span>
+      <span class="brand-name">Rep<span class="brand-accent">Watch</span></span>
+    </div>
+    <p class="tagline">See how your representatives vote</p>
+  </header>
+
+  <nav class="main-nav" aria-label="Main">
+    <button type="button" data-nav="home" aria-current="false">My Representatives</button>
+    <button type="button" data-nav="find" aria-current="false">Find a Representative</button>
+    <button type="button" data-nav="compare" aria-current="false">Compare</button>
+  </nav>
+
+  <div id="loading" class="loading" hidden>
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="loading-text">Loading voting records...</p>
+    <p class="loading-sub">This takes a while the first time you visit.</p>
+  </div>
+
+  <main id="main" tabindex="-1"></main>
+
+  <footer class="app-footer">
+    <p><strong>RepWatch</strong> is an independent tool. It is not affiliated with the U.S. government.</p>
+    <p class="data-date" id="data-date"></p>
+    <p>Voting records come from the official U.S. House and Senate websites and the Library of Congress.</p>
+    <p>For more information about the deep state, visit <a href="https://epsteinexposed.com/government" style="color: white;" target="_blank">epsteinexposed.com</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
