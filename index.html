@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>RepWatch - Representative Vote Tracker</title>
   <meta name="description" content="See how your elected representatives have voted on the issues that matter to you, in plain language.">
   <meta name="theme-color" content="#123a63">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="RepWatch">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -42,6 +46,34 @@
     <p>Voting records come from the official U.S. House and Senate websites and the Library of Congress.</p>
     <p>For more information about the deep state, visit <a href="https://epsteinexposed.com/government" style="color: white;" target="_blank">epsteinexposed.com</a></p>
   </footer>
+
+  <div class="install-bar" id="install-bar" role="region" aria-label="Install RepWatch" hidden>
+    <div class="install-bar-inner">
+      <img class="app-icon" src="icons/icon-192.png" alt="" width="44" height="44">
+      <div class="ib-text">
+        <span class="ib-title">Install RepWatch</span>
+        <span class="ib-sub">Quick offline access</span>
+      </div>
+      <button class="btn ib-install" id="install-btn" type="button">Install</button>
+      <button class="ib-close" id="install-dismiss" type="button" aria-label="Dismiss install prompt">&#10005;</button>
+    </div>
+  </div>
+
+  <div class="install-help" id="install-help" role="dialog" aria-modal="true" aria-labelledby="install-help-title" hidden>
+    <div class="install-help-backdrop" data-help-close></div>
+    <div class="install-help-card">
+      <button class="help-close" data-help-close type="button" aria-label="Close install instructions">&#10005;</button>
+      <div class="help-head">
+        <img class="app-icon" src="icons/icon-192.png" alt="" width="56" height="56">
+        <div>
+          <h2 id="install-help-title">Install RepWatch</h2>
+          <p class="note">Add it to your home screen. It works offline, and your data stays on this device.</p>
+        </div>
+      </div>
+      <ol class="help-steps" id="install-help-steps"></ol>
+      <button class="btn" data-help-close type="button">Done</button>
+    </div>
+  </div>
 
   <script src="app.js"></script>
   <script>

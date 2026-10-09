@@ -846,9 +846,11 @@ async function boot() {
     LOADING.hidden = true;
     MAIN.innerHTML = `<div class="banner"><strong>Could not load data.</strong>
       <p>The app needs its data file (<code>data/data.json</code>). See the README for how to generate it.</p></div>`;
+    maybeShowInstallBar();
     return;
   }
   hideLoading();
+  maybeShowInstallBar();
   window.addEventListener('hashchange', route);
   document.querySelectorAll('.main-nav button').forEach((b) => {
     b.addEventListener('click', () => { location.hash = '#/' + b.getAttribute('data-nav'); });
@@ -861,3 +863,169 @@ async function boot() {
 }
 
 document.addEventListener('DOMContentLoaded', boot);
+
+/* ============================================================
+   PWA install prompt - sticky bottom bar
+
+   - Chrome / Edge (desktop and Android): the beforeinstallprompt
+     event is captured and prompt() is called when Install is tapped.
+   - iOS Safari (and any browser without a native install path): the
+     button opens a short step-by-step instructions dialog instead.
+   - Never shown when the app is already installed
+     (display-mode: standalone) or when the user dismissed it.
+   The bar appears only after the data has loaded, and waits a couple
+   of seconds so it does not compete with the loading screen.
+   ============================================================ */
+
+const INSTALL_DISMISS_KEY = 'repwatch.install.dismissed.v1';
+const INSTALL_BAR = document.getElementById('install-bar');
+const INSTALL_BTN = document.getElementById('install-btn');
+const INSTALL_DISMISS = document.getElementById('install-dismiss');
+const INSTALL_HELP = document.getElementById('install-help');
+const INSTALL_HELP_STEPS = document.getElementById('install-help-steps');
+const INSTALL_HELP_CLOSE = INSTALL_HELP.querySelector('.help-close');
+
+let deferredInstallPrompt = null; // the BeforeInstallPromptEvent, if one fired
+let hadNativePrompt = false;      // this browser offered a native install at some point
+let installBarVisible = false;
+let installBarTimer = null;
+let installHelpReturnFocus = null;
+
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS reports as a Mac
+const isAndroid = /android/i.test(navigator.userAgent);
+
+function isStandalone() {
+  return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+    navigator.standalone === true; // older iOS
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function installBarDismissed() {
+  try { return localStorage.getItem(INSTALL_DISMISS_KEY) === '1'; }
+  catch (e) { return false; }
+}
+
+function showInstallBar() {
+  if (installBarVisible || isStandalone() || installBarDismissed()) return;
+  if (!deferredInstallPrompt && !isIOS) return; // this browser has no install path
+  installBarVisible = true;
+  INSTALL_BAR.hidden = false;
+  document.body.classList.add('install-bar-visible');
+}
+
+function hideInstallBar() {
+  if (!installBarVisible) return;
+  installBarVisible = false;
+  if (installBarTimer) { clearTimeout(installBarTimer); installBarTimer = null; }
+  INSTALL_BAR.classList.add('leaving');
+  setTimeout(() => {
+    INSTALL_BAR.hidden = true;
+    INSTALL_BAR.classList.remove('leaving');
+    document.body.classList.remove('install-bar-visible');
+  }, prefersReducedMotion() ? 0 : 260);
+}
+
+function maybeShowInstallBar() {
+  if (installBarVisible || installBarTimer || isStandalone() || installBarDismissed()) return;
+  if (!deferredInstallPrompt && !isIOS) return;
+  installBarTimer = setTimeout(() => {
+    installBarTimer = null;
+    showInstallBar();
+  }, 2000);
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // hold the prompt so our button can trigger it
+  deferredInstallPrompt = e;
+  hadNativePrompt = true;
+  maybeShowInstallBar();
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  hideInstallBar();
+  closeInstallHelp();
+});
+
+INSTALL_BTN.addEventListener('click', async () => {
+  if (deferredInstallPrompt) {
+    const e = deferredInstallPrompt;
+    deferredInstallPrompt = null; // the event is one-shot: consume it
+    e.prompt();
+    const choice = await e.userChoice;
+    if (choice.outcome === 'accepted') {
+      hideInstallBar();
+    }
+    else {
+      // The native dialog was closed without installing:
+      // fall back to the manual instructions.
+      openInstallHelp();
+    }
+    return;
+  }
+  openInstallHelp();
+});
+
+INSTALL_DISMISS.addEventListener('click', () => {
+  try { localStorage.setItem(INSTALL_DISMISS_KEY, '1'); } catch (e) { }
+  hideInstallBar();
+});
+
+const SHARE_ICON = '<svg class="share-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7.5h14V12"/></svg>';
+
+function helpStepsHTML() {
+  if (isIOS) return [
+    `Tap the <strong>Share</strong> button ${SHARE_ICON} in Safari&rsquo;s toolbar (bottom of the screen on iPhone, top on iPad).`,
+    'Scroll down the share sheet and tap <strong>Add to Home Screen</strong>.',
+    'Tap <strong>Add</strong> in the top-right corner. RepWatch now opens like any other app.',
+  ];
+  if (isAndroid) return [
+    'Open your browser&rsquo;s <strong>menu</strong> (three dots, top-right corner).',
+    'Tap <strong>Install app</strong> (or <strong>Add to Home screen</strong>).',
+    'Confirm when your browser asks. RepWatch now opens like any other app.',
+  ];
+  if (hadNativePrompt) return [
+    'Click the <strong>install icon</strong> on the right side of the address bar (a small screen with a down arrow).',
+    'Choose <strong>Install</strong>. RepWatch now opens in its own window.',
+  ];
+  return [
+    'This browser does not offer an install button, so RepWatch cannot install itself from here.',
+    'Open this site in <strong>Chrome</strong> or <strong>Edge</strong>, then click the <strong>install icon</strong> on the right side of the address bar and choose <strong>Install</strong>.',
+  ];
+}
+
+function openInstallHelp() {
+  if (!INSTALL_HELP.hidden) return;
+  INSTALL_HELP_STEPS.innerHTML = helpStepsHTML().map((s) => `<li>${s}</li>`).join('');
+  INSTALL_HELP.hidden = false;
+  installHelpReturnFocus = document.activeElement;
+  INSTALL_HELP_CLOSE.focus();
+  document.addEventListener('keydown', installHelpKeydown);
+}
+
+function closeInstallHelp() {
+  if (INSTALL_HELP.hidden) return;
+  INSTALL_HELP.hidden = true;
+  document.removeEventListener('keydown', installHelpKeydown);
+  if (installHelpReturnFocus && typeof installHelpReturnFocus.focus === 'function') {
+    installHelpReturnFocus.focus();
+  }
+  installHelpReturnFocus = null;
+}
+
+/* Keep focus inside the dialog; Escape closes it. */
+function installHelpKeydown(e) {
+  if (e.key === 'Escape') { e.preventDefault(); closeInstallHelp(); return; }
+  if (e.key !== 'Tab') return;
+  const focusables = INSTALL_HELP.querySelectorAll('button');
+  const first = focusables[0], last = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+INSTALL_HELP.querySelectorAll('[data-help-close]').forEach((el) =>
+  el.addEventListener('click', closeInstallHelp));

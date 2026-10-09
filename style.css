@@ -795,6 +795,205 @@ table.compare tr.total-row td {
   }
 }
 
+/* ---------- PWA install prompt (sticky bottom bar) ---------- */
+
+.install-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  background: var(--navy);
+  color: #fff;
+  border-top: 2px solid var(--navy-dark);
+  box-shadow: 0 -3px 10px rgba(12, 43, 75, 0.25);
+  /* On a real phone, clear the home-indicator area */
+  padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.install-bar.leaving {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+/* Centered like the rest of the layout on wide screens */
+.install-bar-inner {
+  max-width: 52rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.8rem;
+}
+
+.install-bar img.app-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: block;
+}
+
+.install-bar .ib-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.install-bar .ib-title {
+  display: block;
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.install-bar .ib-sub {
+  display: block;
+  font-size: 0.95rem;
+  color: #cfe0f2;
+  line-height: 1.25;
+}
+
+.install-bar .ib-install {
+  flex: 0 0 auto;
+  background: #fff;
+  color: var(--navy);
+  border-color: #fff;
+  min-height: 48px;
+  padding: 0.4rem 1.2rem;
+  white-space: nowrap;
+}
+
+.install-bar .ib-install:hover {
+  background: var(--navy-soft);
+}
+
+.install-bar .ib-close {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.install-bar .ib-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* On very narrow phones drop the tagline line so the bar stays compact */
+@media (max-width: 420px) {
+  .install-bar .ib-sub {
+    display: none;
+  }
+}
+
+/* Keep the last lines of content readable above the fixed bar */
+body.install-bar-visible .app-footer {
+  padding-bottom: calc(1.6rem + 8.5rem + env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .install-bar {
+    transition: none;
+  }
+}
+
+/* ---------- Install instructions dialog ---------- */
+
+.install-help {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.install-help[hidden] {
+  display: none;
+}
+
+.install-help-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 43, 75, 0.55);
+}
+
+.install-help-card {
+  position: relative;
+  width: min(26rem, 100%);
+  background: var(--card);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(12, 43, 75, 0.35);
+  padding: 1.2rem 1.3rem;
+}
+
+.install-help-card .help-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--navy-soft);
+  color: var(--navy);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.install-help-card .help-close:hover {
+  background: var(--navy);
+  color: #fff;
+}
+
+.help-head {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 0 0.4rem;
+}
+
+.help-head img.app-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: block;
+}
+
+.help-head h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.help-head .note {
+  margin: 0.1rem 0 0;
+}
+
+.help-steps {
+  margin: 0.7rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.help-steps li {
+  margin: 0.55rem 0;
+}
+
+.help-steps .share-icon {
+  vertical-align: -0.2em;
+  margin: 0 0.15em;
+}
+
+.install-help-card .btn {
+  width: 100%;
+}
+
 /* ---------- Print ---------- */
 @media print {
 
@@ -804,7 +1003,9 @@ table.compare tr.total-row td {
   .vote-toggle,
   .back-link,
   .skip-link,
-  .vote-group-toggle {
+  .vote-group-toggle,
+  .install-bar,
+  .install-help {
     display: none !important;
   }
 
