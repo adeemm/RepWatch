@@ -587,6 +587,13 @@ function viewMember(id) {
     }
   }
 
+  /* --- External headlines (Reddit) --- */
+  html += `<div class="card"><p>
+    <strong><a href="https://www.reddit.com/search/?q=${encodeURIComponent((m.name || '') + (m.state ? ' ' + m.state : ''))}" target="_blank" rel="noopener">Click here to see headlines</a></strong>
+    from an external news aggregator.
+    <br>
+    <span class="note">This link opens a third-party site that is not monitored or verified by RepWatch.</span></p></div>`;
+
   /* --- Voting record by issue --- */
   html += `<h2>How ${esc((m.name || '').split(' ').pop())} has voted</h2>`;
   if (stats.total === 0) {
