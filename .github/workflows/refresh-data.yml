@@ -31,12 +31,31 @@ jobs:
       - name: Validate output
         run: |
           python3 - <<'EOF'
-          import json, subprocess, sys
+          import json, re, subprocess, sys
 
           new = json.load(open("data/data.json"))
           counts = new["meta"]["counts"]
           if counts["members"] < 400 or counts["votes"] < 10:
               sys.exit(f"Aborting: data too small ({counts})")
+
+          # Content sanity: data.json is rendered by the web app, so refuse
+          # anything that looks like an injection payload or a bad link.
+          html_chars = re.compile(r"[<>]")
+          for m in new["members"]:
+              for field in ("name", "state", "party", "left"):
+                  val = m.get(field)
+                  if isinstance(val, str) and html_chars.search(val):
+                      sys.exit(f"Aborting: HTML chars in member {m.get('id')!r} "
+                               f"field {field!r}: {val!r}")
+          bill_url = re.compile(r"^https?://www\.congress\.gov/")
+          for key, b in new["bills"].items():
+              u = b.get("url") or ""
+              if u and not bill_url.match(u):
+                  sys.exit(f"Aborting: unexpected bill URL {u!r} (bill {key})")
+          vote_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+          for v in new["votes"]:
+              if not vote_date.match(v.get("date", "")):
+                  sys.exit(f"Aborting: bad vote date {v.get('date')!r} (vote {v.get('id')!r})")
 
           # If the committed file covers the same Congress, a big vote-count
           # drop means this run likely failed partway through, bail.

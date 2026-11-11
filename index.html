@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'">
   <title>RepWatch - Representative Vote Tracker</title>
   <meta name="description" content="See how your elected representatives have voted on the issues that matter to you, in plain language.">
   <meta name="theme-color" content="#123a63">
@@ -81,12 +82,5 @@
   </div>
 
   <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
-    }
-  </script>
 </body>
 </html>

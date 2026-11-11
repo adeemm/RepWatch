@@ -115,6 +115,16 @@ function congressBillURL(bill) {
   return `https://www.congress.gov/bill/${congress}th-congress/${slug}/${bill.number}`;
 }
 
+/* Links built from data may only point at http(s) pages. HTML escaping
+   does NOT stop javascript:/data: URIs, so validate the scheme. */
+function safeExternalURL(u) {
+  if (typeof u !== 'string' || !u) return null;
+  try {
+    const x = new URL(u, location.origin);
+    return (x.protocol === 'https:' || x.protocol === 'http:') ? u : null;
+  } catch (e) { return null; }
+}
+
 /* A bare "On Passage" question names no measure (it occurs on House roll
    calls for joint resolutions). Title falls back to the Clerk's description instead. */
 function barePassageQuestion(v) {
@@ -308,7 +318,7 @@ function voteDescription(v) {
 /* ---------------- Shared UI pieces ---------------- */
 
 function memberCardHTML(m, actions) {
-  const notServing = m.serving === false ? ` <span class="note">(no longer serving - left office ${m.left || 'mid-Congress'})</span>` : '';
+  const notServing = m.serving === false ? ` <span class="note">(no longer serving - left office ${esc(m.left || 'mid-Congress')})</span>` : '';
   return `<div class="member-card">
     <div class="avatar" aria-hidden="true">${esc(initials(m.name))}</div>
     <div class="who">
@@ -340,7 +350,7 @@ function voteArticleHTML(memberId, v) {
   const desc = voteDescription(v);
   const key = billKey(v);
   const bill = key ? (DB.bills || {})[key] : null;
-  const url = (bill && bill.url) || (v.bill ? congressBillURL(v.bill) : null);
+  const url = safeExternalURL(bill && bill.url) || (v.bill ? congressBillURL(v.bill) : null);
   const link = url ? ` <a href="${esc(url)}" target="_blank" rel="noopener">(open on Congress.gov)</a>` : '';
   const title = voteTitle(v);
   const motion = motionLabel(v);
@@ -556,7 +566,7 @@ function viewMember(id) {
         <h1 style="margin:0">${esc(m.name)}
           <span class="party-tag ${partyClass(m.party)}">${esc(partyLabel(m.party))}</span></h1>
         <p class="note" style="margin:0.2rem 0 0">${esc(memberTitle(m))}
-          ${m.serving === false ? ` · no longer serving (left office ${m.left || 'mid-Congress'})` : ''}</p>
+          ${m.serving === false ? ` · no longer serving (left office ${esc(m.left || 'mid-Congress')})` : ''}</p>
       </div>
       <div>${isSaved(id)
         ? `<button class="btn secondary" id="member-toggle">✓ Saved - tap to remove</button>`
@@ -654,7 +664,7 @@ function viewMember(id) {
       voteList.innerHTML = `<div class="empty-state"><p>No votes for this selection.</p></div>`;
       return;
     }
-    const shown = memberShowAll ? '' : ` (issue: ${esc(memberFilterIssue)})`;
+    const shown = (!memberShowAll && memberFilterIssue) ? ` (issue: ${esc(memberFilterIssue)})` : '';
     const { mainOf, hidden } = buildBillGroups(votes);
     let out = `<p class="section-hint">${votes.length} vote${votes.length === 1 ? '' : 's'}${shown} - newest first</p>`;
     let groupIdx = 0;
@@ -797,7 +807,7 @@ function viewCompare() {
       rows += '</tr>';
     }
     const head = `<tr><th style="min-width:16rem">Bill or amendment</th>${people.map((m) =>
-      `<th><span class="rep-name">${esc(m.name)}</span><br><span style="font-weight:400;font-size:0.95rem">${esc(STATE_NAMES[m.state] || m.state)}${m.chamber === 'senate' ? ' · Senate' : ' · District ' + m.district}</span></th>`).join('')}</tr>`;
+      `<th><span class="rep-name">${esc(m.name)}</span><br><span style="font-weight:400;font-size:0.95rem">${esc((STATE_NAMES[m.state] || m.state) + (m.chamber === 'senate' ? ' · Senate' : ' · District ' + m.district))}</span></th>`).join('')}</tr>`;
     const totalRow = `<tr class="total-row"><td class="bill-cell">Total (${votes.length} votes shown)</td>${totals.map((t) =>
       `<td>${t.for} for · ${t.against} against</td>`).join('')}</tr>`;
 
@@ -1036,3 +1046,13 @@ function installHelpKeydown(e) {
 
 INSTALL_HELP.querySelectorAll('[data-help-close]').forEach((el) =>
   el.addEventListener('click', closeInstallHelp));
+
+/* ============================================================
+   Service worker registration (kept out of index.html so the page
+   can enforce a strict script-src 'self' CSP).
+   ============================================================ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}

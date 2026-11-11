@@ -642,12 +642,19 @@ def fetch_bill_status(congress, btype, number, sleep_s=0.12):
     if la is not None:
         latest = " ".join(x for x in [(la.findtext("actionDate") or "").strip(),
                                       (la.findtext("text") or "").strip()] if x)
+    url = (bill.findtext("legislationUrl") or "").strip()
+    # Only Congress.gov links may reach the app's <a href>. The app also
+    # allowlists URL schemes at render time, but keep the data clean too.
+    if url and not url.startswith(("https://www.congress.gov/",
+                                   "http://www.congress.gov/")):
+        print(f"    ! dropping unexpected legislationUrl for {btype}{number}: {url!r}")
+        url = ""
     return {
         "title": title,
         "summary": summary[:2200],
         "issue": issue,
         "subjects": subjects,
-        "url": (bill.findtext("legislationUrl") or "").strip(),
+        "url": url,
         "latest_action": latest[:500],
     }
 
